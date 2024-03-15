@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softbros-School data</title>
+    <link rel="icon" type="image/x-icon" href="image/brand.jpg">
+</head>
+
+<style>
+    #schoolInfo {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 40px 20px;
+    }
+
+    main {
+        max-width: 1200px;
+        margin: auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .schoolBlock {
+        background-color: rgb(240, 247, 252);
+        border-radius: 9px;
+        padding: 10px 10px 20px;
+        height: auto;
+        box-shadow: 0 0 11px rgb(197, 197, 197);
+    }
+
+    .each h2 {
+        color: blue;
+    }
+
+    .each a {
+        text-decoration: none;
+        padding: 8px;
+        background-color: rgb(4, 219, 4);
+        color: white;
+    }
+
+    .each a.no-url {
+        background-color: yellow;
+        color: black;
+    }
+
+    .brandCol {
+        display: flex;
+        margin: 60px 0 60px;
+    }
+
+    .brandCol>div:first-child {
+        width: fit-content;
+        max-width: 40%;
+    }
+
+    .brandCol h1 {
+        margin: 0;
+    }
+
+    .brandCol p {
+        margin: 0;
+    }
+
+    .brandCol img {
+        width: 70px;
+    }
+
+    .input_me input {
+        padding: 10px;
+        width: 220px;
+        border: 2px solid gray;
+        outline: 0;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .title
+</style>
+
+<body>
+    <main>
+        <div class="brandCol">
+            <div class="imgCol">
+                <img src="image/brand.jpg" alt="Softbros logo">
+            </div>
+            <div class="title">
+                <h1>Softbros <span>True Solution</span></h1>
+                <p>List of school in Hassan. Helps us to find out targeted school.</p>
+            </div>
+        </div>
+        <div class="input_me">
+            <input type="text" oninput="filterbyinput(this)" placeholder="Search by school name">
+            <p id="schoolCount"></p>
+        </div>
+        <div id="schoolInfo"></div>
+    </main>
+
+    <script>
+        (async function getData() {
+            const data = await fetch('school_data/school.json')
+                .then((resp) => resp.json())
+                .then((json) => createMarkup(json));
+        })();
+
+        async function createMarkup(jData) {
+            const idBlock = document.querySelector('#schoolInfo');
+            jData.forEach(school => {
+                let website, websiteURL, cls
+                if (school.website.length < 4) { website = 'No website'; websiteURL = '/'; cls = 'no-url' }
+                else { website = 'Has Website'; websiteURL = school.website }
+                const schoolData = `<div data-filter = "${school.filter}" class="each">
+            <h2>${school.schoolName}</h2>
+            <h3>${school.schoolType}</h3>
+            <p>${school.phone}</p>
+            <p>${school.address}</p>
+            
+            <a href="${websiteURL}" class='${cls}' target=_blank>${website}</a>
+        </div>`;
+                const crdiv = document.createElement('div');
+                crdiv.innerHTML = schoolData;
+                crdiv.className = 'schoolBlock';
+                idBlock.append(crdiv);
+            });
+            countSchool(document.querySelectorAll('.schoolBlock').length)
+        }
+        function countSchool(cs) {
+            document.querySelector('#schoolCount').textContent = `Result: ${cs} Found`
+        }
+        function filterbyinput(ins) {
+            const allCard = document.querySelectorAll('.schoolBlock');
+            allCard.forEach((card) => {
+                console.log(card.querySelector('.each').getAttribute('data-filter').toLowerCase())
+                if (card.querySelector('h2').textContent.toLowerCase().includes(ins.value.toLowerCase()) || card.querySelector('a').textContent.toLowerCase().includes(ins.value.toLowerCase())) {
+                    card.style.display = 'block';
+                    card.classList.add('displayed')
+                } else {
+                    card.style.display = 'none'
+                    card.classList.remove('displayed');
+                }
+            });
+            countSchool(document.querySelectorAll('.displayed').length);
+        }
+    </script>
+</body>
+
+</html>
