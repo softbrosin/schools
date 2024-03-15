@@ -13,6 +13,7 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 40px 20px;
+        margin: auto;
     }
 
     main {
@@ -31,6 +32,7 @@
 
     .each h2 {
         color: blue;
+        word-break: break-word;
     }
 
     .each a {
@@ -74,6 +76,24 @@
         outline: 0;
         border-radius: 4px;
         font-size: 16px;
+    }
+
+    @media (max-width: 992px) {
+        #schoolInfo {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 40px 20px;
+            margin: auto;
+        }
+    }
+
+    @media (max-width: 767px) {
+        #schoolInfo {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 40px 20px;
+            margin: auto;
+        }
     }
 
     .title
