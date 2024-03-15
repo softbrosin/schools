@@ -143,7 +143,7 @@
             <a href="${school.map}" class="map" target=_blank>Map</a>
             <p>${school.address}</p>
             
-            <a href="${websiteURL}" class='${cls}' target=_blank>${website}</a>
+            <a href="${websiteURL}" class='${cls} web' target=_blank>${website}</a>
         </div>`;
                 const crdiv = document.createElement('div');
                 crdiv.innerHTML = schoolData;
@@ -159,7 +159,7 @@
             const allCard = document.querySelectorAll('.schoolBlock');
             allCard.forEach((card) => {
                 console.log(card.querySelector('.each').getAttribute('data-filter').toLowerCase())
-                if (card.querySelector('h2').textContent.toLowerCase().includes(ins.value.toLowerCase()) || card.querySelector('a').textContent.toLowerCase().includes(ins.value.toLowerCase())) {
+                if (card.querySelector('h2').textContent.toLowerCase().includes(ins.value.toLowerCase()) || card.querySelector('.web').textContent.toLowerCase().includes(ins.value.toLowerCase())) {
                     card.style.display = 'block';
                     card.classList.add('displayed')
                 } else {
